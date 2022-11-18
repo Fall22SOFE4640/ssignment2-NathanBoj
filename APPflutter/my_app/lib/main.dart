@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:share_plus/share_plus.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:maps_launcher/maps_launcher.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -46,9 +50,9 @@ class MyApp extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildButtonColumn(color, Icons.call, 'CALL'),
-          _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-          _buildButtonColumn(color, Icons.share, 'SHARE'),
+          _buildButtonColumn(color, Icons.call, 'CALL', 'callFunction'),
+          _buildButtonColumn(color, Icons.near_me, 'ROUTE', 'routeFunction'),
+          _buildButtonColumn(color, Icons.share, 'SHARE', 'shareFunction'),
         ],
       ),
     );
@@ -89,12 +93,23 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
+  Column _buildButtonColumn(Color color, IconData icon, String label, String buttonFunction) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: color),
+        IconButton(
+            icon: Icon(icon),
+            color: color,
+            onPressed: () {
+              if (buttonFunction == 'callFunction'){
+                FlutterPhoneDirectCaller.callNumber("+1234567890");
+              } else if (buttonFunction == 'routeFunction'){
+                MapsLauncher.launchCoordinates(37.4220041, -122.0862462, 'Lake Oeschinen');
+              }else {
+                Share.share('Lake Oeschinen');}
+      },
+    ),
         Container(
           margin: const EdgeInsets.only(top: 8),
           child: Text(
